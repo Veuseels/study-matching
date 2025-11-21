@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EduConnect — Chat + Drawing Board (Demo)</title>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#ffffff; --muted:#667085; --accent:#3b82f6;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:var(--bg); color:#0f172a}
+    .app{display:grid;grid-template-columns:360px 1fr;gap:20px;height:100vh;padding:20px}
+
+    /* left panel */
+    .panel{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(15,23,42,0.06);display:flex;flex-direction:column}
+    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .brand{font-weight:700}
+    .controls label{font-size:12px;color:var(--muted);display:block}
+    .controls input, .controls select{width:100%;padding:8px;border:1px solid #e6e9ef;border-radius:8px;margin-top:6px}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;background:var(--accent);color:white;border:none;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(59,130,246,0.12)}
+
+    .list{flex:1;overflow:auto;margin-top:12px}
+    .status{font-size:13px;color:var(--muted);margin-bottom:8px}
+
+    /* right panel */
+    .main{display:flex;flex-direction:column;gap:12px}
+    .chat-card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(15,23,42,0.04);display:flex;flex-direction:column;height:45vh}
+    .messages{flex:1;overflow:auto;padding:8px;border-radius:8px;background:#fbfdff;border:1px solid #eef2ff}
+    .message{margin:8px 0;max-width:70%;padding:8px 10px;border-radius:10px;background:#eef2ff}
+    .message.me{margin-left:auto;background:#dbeafe}
+    .meta{font-size:12px;color:var(--muted)}
+    .composer{display:flex;gap:8px;margin-top:8px}
+    .composer input{flex:1;padding:10px;border-radius:10px;border:1px solid #e6e9ef}
+
+    .draw-card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(15,23,42,0.04)}
+    .toolbar{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+    .toolbar input[type=range]{width:90px}
+    canvas{background:white;border-radius:8px;border:1px solid #e6e9ef;display:block;width:100%;height:300px}
+
+    .footer-note{font-size:13px;color:var(--muted);margin-top:8px}
+
+    @media (max-width:900px){.app{grid-template-columns:1fr;grid-auto-rows:auto;height:auto;padding:12px}.panel{order:2}.main{order:1}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="panel">
+      <div class="header">
+        <div class="brand">EduConnect — Demo</div>
+        <button id="instantBtn" class="btn">Find instant tutor</button>
+      </div>
+
+      <div class="controls">
+        <label>Name</label>
+        <input id="displayName" placeholder="your name" value="student-" />
+        <label style="margin-top:8px">Role</label>
+        <select id="role">
+          <option value="student">Student</option>
+          <option value="teacher">Teacher</option>
+        </select>
+        <label style="margin-top:8px">Teacher verification (demo)</label>
+        <select id="verified">
+          <option value="unverified">Unverified</option>
+          <option value="verified">Verified</option>
+        </select>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button id="joinBtn" class="btn">Join Room</button>
+          <button id="leaveBtn" class="btn ghost">Leave</button>
+        </div>
+      </div>
+
+      <div class="list">
+        <div class="status">Connection: <span id="connStatus">disconnected</span></div>
+        <div style="font-size:13px;color:var(--muted);">Instructions</div>
+        <ul style="padding-left:18px;color:var(--muted)">
+          <li>Open this file in two tabs to simulate real-time.</li>
+          <li>Use different names/roles and click "Join Room".</li>
+          <li>Messages and drawings sync across tabs using BroadcastChannel (same browser).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="chat-card">
+        <div style="display:flex;justify-content:space-between;align-items:end;">
+          <div class="meta">Chat Room <span id="roomTag" style="color:var(--muted);font-size:12px;margin-left:6px">(demo)</span></div>
+          <div class="meta">Connected: <strong id="peerCount">0</strong></div>
+        </div>
+        <div id="messages" class="messages" aria-live="polite"></div>
+        <div class="composer">
+          <input id="messageInput" placeholder="Type a message and press Enter" />
+          <button id="sendBtn" class="btn">Send</button>
+        </div>
+      </div>
+
+      <div class="draw-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="meta">Shared Drawing Board</div>
+          <div class="meta">Role: <span id="curRole">student</span></div>
+        </div>
+        <div class="toolbar">
+          <label>Tool:</label>
+          <select id="tool">
+            <option value="pen">Pen</option>
+            <option value="eraser">Eraser</option>
+          </select>
+          <label>Size</label>
+          <input id="size" type="range" min="1" max="30" value="3" />
+          <label>Color</label>
+          <input id="color" type="color" value="#111827" />
+          <button id="clearBtn" class="btn ghost">Clear</button>
+          <button id="saveBtn" class="btn">Save Image</button>
+        </div>
+        <canvas id="board"></canvas>
+        <div class="footer-note">Tip: to simulate two users, open another tab of this file and join with a different name. This demo uses the BroadcastChannel API (works in same-browser tabs).</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+// ====== Simple real-time demo using BroadcastChannel ======
+// This demo uses two channels: chatChannel and drawChannel
+let chatChannel = null;
+let drawChannel = null;
+let joined = false;
+let nameInput = document.getElementById('displayName');
+let roleSelect = document.getElementById('role');
+let verifiedSelect = document.getElementById('verified');
+let joinBtn = document.getElementById('joinBtn');
+let leaveBtn = document.getElementById('leaveBtn');
+let connStatus = document.getElementById('connStatus');
+let peerCountEl = document.getElementById('peerCount');
+let roomTag = document.getElementById('roomTag');
+let curRole = document.getElementById('curRole');
+let instantBtn = document.getElementById('instantBtn');
+
+const messagesEl = document.getElementById('messages');
+const msgInput = document.getElementById('messageInput');
+const sendBtn = document.getElementById('sendBtn');
+
+function appendMessage(text, who='them'){
+  let div = document.createElement('div');
+  div.className = 'message' + (who==='me' ? ' me' : '');
+  div.textContent = text;
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+joinBtn.addEventListener('click', ()=>{
+  if(joined) return;
+  const name = (nameInput.value || 'anon').trim();
+  if(!name) return alert('Please enter a name');
+
+  chatChannel = new BroadcastChannel('edu_chat_room');
+  drawChannel = new BroadcastChannel('edu_draw_room');
+
+  chatChannel.postMessage({type:'join', name, role:roleSelect.value, verified:verifiedSelect.value, ts:Date.now()});
+
+  chatChannel.onmessage = (ev)=>{
+    const msg = ev.data;
+    if(msg.type === 'join'){
+      connStatus.textContent = 'connected';
+      appendMessage(`${msg.name} joined as ${msg.role}${msg.verified==='verified' ? ' (verified)' : ''}`,'them');
+      updatePeerCount();
+    } else if(msg.type === 'chat'){
+      appendMessage(`${msg.from}: ${msg.text}`,(msg.from===name)?'me':'them');
+    } else if(msg.type === 'system'){
+      appendMessage(`[system] ${msg.text}`,'them');
+    }
+  };
+
+  drawChannel.onmessage = (ev)=>{
+    const d = ev.data;
+    if(d.type==='stroke') replayStroke(d.stroke);
+    if(d.type==='clear') clearBoard(false);
+  };
+
+  joined = true;
+  connStatus.textContent = 'connected';
+  curRole.textContent = roleSelect.value;
+  roomTag.textContent = '(edu_chat_room)';
+  updatePeerCount();
+});
+
+leaveBtn.addEventListener('click', ()=>{
+  if(!joined) return;
+  chatChannel.postMessage({type:'system', text:`${nameInput.value || 'anon'} left the room`});
+  chatChannel.close(); drawChannel.close();
+  chatChannel = null; drawChannel = null; joined=false;
+  connStatus.textContent = 'disconnected'; peerCountEl.textContent = '0';
+});
+
+function updatePeerCount(){
+  // BroadcastChannel doesn't expose peers; this demo approximates by counting recent joins using localStorage ping.
+  // For a real system use WebSocket / signalling server.
+  let count = parseInt(localStorage.getItem('edu_peer_count')||'0');
+  count = count+1; // naive increment to show nonzero
+  peerCountEl.textContent = Math.max(1, count);
+}
+
+sendBtn.addEventListener('click', sendMessage);
+msgInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendMessage(); });
+
+function sendMessage(){
+  if(!joined) return alert('Join the room first');
+  const text = msgInput.value.trim(); if(!text) return;
+  const payload = {type:'chat', from: nameInput.value, text, ts:Date.now()};
+  chatChannel.postMessage(payload);
+  appendMessage(`${payload.from}: ${payload.text}`,'me');
+  msgInput.value = '';
+}
+
+// Instant tutor demo: pick a random "teacher" name and broadcast a quick match notice
+instantBtn.addEventListener('click', ()=>{
+  if(!joined) return alert('Join first');
+  // example mock teacher pool
+  const pool = ['Ms. Rivera (math)','Mr. Chen (physics)','Aisha (english)','Kai (coding)'];
+  const teacher = pool[Math.floor(Math.random()*pool.length)];
+  chatChannel.postMessage({type:'system', text:`Instant tutor matched: ${teacher}`});
+});
+
+// ===== Drawing board =====
+const canvas = document.getElementById('board');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+let last = null;
+function resize(){
+  // keep internal resolution high for sharpness
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.floor(rect.width * devicePixelRatio);
+  canvas.height = Math.floor(rect.height * devicePixelRatio);
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  redrawFromCache();
+}
+window.addEventListener('resize', resize);
+resize();
+
+let strokes = []; // local cache of strokes for redraw
+function beginStroke(x,y,color,size,tool){
+  last = {x,y};
+  strokes.push({tool,color,size,points:[{x,y}]});
+}
+function addPoint(x,y){
+  if(!last) return;
+  const s = strokes[strokes.length-1];
+  s.points.push({x,y});
+}
+function endStroke(){ last=null; }
+
+function drawStroke(s, emit=false){
+  if(!s || !s.points || s.points.length===0) return;
+  ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  if(s.tool==='eraser'){
+    ctx.globalCompositeOperation = 'destination-out';
+  } else { ctx.globalCompositeOperation = 'source-over'; }
+  ctx.beginPath();
+  ctx.lineWidth = s.size;
+  ctx.moveTo(s.points[0].x, s.points[0].y);
+  for(let i=1;i<s.points.length;i++) ctx.lineTo(s.points[i].x, s.points[i].y);
+  if(s.tool !== 'eraser') ctx.strokeStyle = s.color;
+  ctx.stroke();
+  ctx.closePath();
+  ctx.globalCompositeOperation = 'source-over';
+  if(emit && drawChannel) drawChannel.postMessage({type:'stroke', stroke:s});
+}
+
+function redrawFromCache(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(const s of strokes) drawStroke(s,false);
+}
+
+// mouse/touch handlers
+canvas.addEventListener('pointerdown', (e)=>{
+  if(!joined) return;
+  drawing = true; canvas.setPointerCapture(e.pointerId);
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left);
+  const y = (e.clientY - rect.top);
+  const tool = document.getElementById('tool').value;
+  const color = document.getElementById('color').value;
+  const size = parseInt(document.getElementById('size').value,10);
+  beginStroke(x,y,color,size,tool);
+});
+canvas.addEventListener('pointermove', (e)=>{
+  if(!drawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = (e.clientX - rect.left);
+  const y = (e.clientY - rect.top);
+  addPoint(x,y);
+  // draw incremental
+  const s = strokes[strokes.length-1];
+  drawStroke({...s, points: s.points.slice(-2)}, true);
+});
+canvas.addEventListener('pointerup', (e)=>{ drawing=false; endStroke(); });
+
+// replay stroke received from other peers
+function replayStroke(s){
+  strokes.push(s);
+  drawStroke(s,false);
+}
+
+// clear and save
+document.getElementById('clearBtn').addEventListener('click', ()=>{ clearBoard(true); });
+function clearBoard(broadcast){ strokes = []; ctx.clearRect(0,0,canvas.width,canvas.height); if(broadcast && drawChannel) drawChannel.postMessage({type:'clear'}); }
+
+document.getElementById('saveBtn').addEventListener('click', ()=>{
+  const link = document.createElement('a');
+  link.download = 'board.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+});
+
+// handle incoming strokes when the page first loads
+function redrawFromCacheIfAny(){ redrawFromCache(); }
+redrawFromCacheIfAny();
+
+// small UX touch: reflect role/name changes in UI
+nameInput.addEventListener('input', ()=>{ /* nothing heavy */ });
+roleSelect.addEventListener('change', ()=>{ curRole.textContent = roleSelect.value; });
+
+// initial demo ping for peercount
+(function demoPing(){
+  try{ localStorage.setItem('edu_peer_count', String((parseInt(localStorage.getItem('edu_peer_count')||'0')+1))); }catch(e){}
+})();
+
+// end of demo script
+</script>
+</body>
+</html>
