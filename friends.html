@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friends - EduConnect</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --white: #ffffff;
+            --danger-color: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--white);
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-right: 2rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .nav-tabs {
+            display: flex;
+        }
+        
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            margin-right: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: var(--dark-color);
+        }
+        
+        .nav-tab:hover, .nav-tab.active {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .user-profile {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Friends Container */
+        .friends-container {
+            display: flex;
+            margin: 2rem 0;
+            gap: 2rem;
+        }
+        
+        /* Friends Sidebar */
+        .friends-sidebar {
+            width: 300px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .friends-stats {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .friends-count {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .friends-label {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .friends-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .badge {
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+        
+        /* Friends Content */
+        .friends-content {
+            flex: 1;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .friends-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .friends-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 2rem;
+        }
+        
+        .friends-tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .friends-tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Search Section */
+        .search-section {
+            margin-bottom: 2rem;
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .search-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+        }
+        
+        /* Friends Grid */
+        .friends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .friend-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .friend-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .friend-avatar {
+            width: 100%;
+            height: 150px;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .friend-content {
+            padding: 1.5rem;
+        }
+        
+        .friend-name {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .friend-major {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .friend-interests {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .friend-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        /* Friend Requests */
+        .request-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .request-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .request-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .request-info {
+            flex: 1;
+        }
+        
+        .request-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        
+        .request-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .request-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Friend List */
+        .friend-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .friend-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+        
+        .friend-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .friend-item-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .friend-item-info {
+            flex: 1;
+        }
+        
+        .friend-item-name {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        
+        .friend-item-status {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .friend-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        /* Friend Profile Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .profile-details {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-avatar-large {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+        }
+        
+        .profile-info {
+            flex: 1;
+        }
+        
+        .profile-name {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-major {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-bio {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .profile-interests {
+            margin-bottom: 1.5rem;
+        }
+        
+        .interest-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .interest-tag {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .friends-container {
+                flex-direction: column;
+            }
+            
+            .friends-sidebar {
+                width: 100%;
+            }
+            
+            .friends-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .nav-tab {
+                margin-bottom: 0.5rem;
+            }
+            
+            .profile-details {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">EC</div>
+            <div class="logo-text">EduConnect</div>
+        </div>
+        <div class="nav-tabs">
+            <a href="index.html" class="nav-tab">Home</a>
+            <a href="teachers.html" class="nav-tab">Teachers</a>
+            <a href="courses.html" class="nav-tab">Courses</a>
+            <a href="friends.html" class="nav-tab active">Friends</a>
+            <a href="profile.html" class="nav-tab">Profile</a>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar" id="headerAvatar">JD</div>
+            <div id="headerUserName">John Doe</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="friends-container">
+            <!-- Friends Sidebar -->
+            <div class="friends-sidebar">
+                <div class="friends-stats">
+                    <div class="friends-count" id="friendsCount">24</div>
+                    <div class="friends-label">Friends</div>
+                </div>
+                
+                <div class="friends-actions">
+                    <button class="btn" id="findFriendsBtn">Find New Friends</button>
+                    <button class="btn btn-secondary" id="viewRequestsBtn">Friend Requests <span id="requestsCount" class="badge">3</span></button>
+                    <button class="btn btn-outline" id="viewAllFriendsBtn">All Friends</button>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <p><strong>Sarah Chen</strong> started a new course</p>
+                            <span class="activity-time">2 hours ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <p><strong>Mike Johnson</strong> shared a study resource</p>
+                            <span class="activity-time">5 hours ago</span>
+                        </div>
+                        <div class="activity-item">
+                            <p><strong>Emma Wilson</strong> completed a lesson</p>
+                            <span class="activity-time">Yesterday</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Friends Content -->
+            <div class="friends-content">
+                <div class="friends-header">
+                    <h1>Friends</h1>
+                    <div class="friends-search">
+                        <input type="text" class="search-input" id="friendsSearch" placeholder="Search friends...">
+                    </div>
+                </div>
+                
+                <div class="friends-tabs">
+                    <div class="friends-tab active" data-tab="find">Find Friends</div>
+                    <div class="friends-tab" data-tab="requests">Friend Requests</div>
+                    <div class="friends-tab" data-tab="list">My Friends</div>
+                </div>
+                
+                <!-- Find Friends Tab -->
+                <div class="tab-content active" id="findTab">
+                    <div class="search-section">
+                        <div class="search-bar">
+                            <input type="text" class="search-input" id="searchFriendsInput" placeholder="Search by name, major, or interests...">
+                            <button class="btn" id="searchFriendsBtn">Search</button>
+                        </div>
+                        <div class="search-filters">
+                            <select class="filter-select" id="majorFilter">
+                                <option value="">All Majors</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Biology">Biology</option>
+                                <option value="Business">Business</option>
+                                <option value="Engineering">Engineering</option>
+                            </select>
+                            <select class="filter-select" id="interestsFilter">
+                                <option value="">All Interests</option>
+                                <option value="Programming">Programming</option>
+                                <option value="English">English</option>
+                                <option value="Math">Math</option>
+                                <option value="Science">Science</option>
+                                <option value="Art">Art</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <h2>Suggested Friends</h2>
+                    <div class="friends-grid" id="suggestedFriends">
+                        <!-- Suggested friends will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Friend Requests Tab -->
+                <div class="tab-content" id="requestsTab">
+                    <h2>Friend Requests</h2>
+                    <div class="request-list" id="friendRequests">
+                        <!-- Friend requests will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- My Friends Tab -->
+                <div class="tab-content" id="listTab">
+                    <h2>My Friends</h2>
+                    <div class="friend-list" id="myFriends">
+                        <!-- Friends list will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Friend Profile Modal -->
+    <div class="modal" id="friendProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Friend Profile</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="profile-details">
+                <div class="profile-avatar-large" id="modalAvatar">SC</div>
+                <div class="profile-info">
+                    <h3 class="profile-name" id="modalName">Sarah Chen</h3>
+                    <div class="profile-major" id="modalMajor">Computer Science</div>
+                    <div class="profile-bio" id="modalBio">Passionate about AI and machine learning. Currently working on a research project about natural language processing.</div>
+                    
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="stat-value" id="modalCourses">12</div>
+                            <div class="stat-label">Courses</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="stat-value" id="modalFriends">47</div>
+                            <div class="stat-label">Friends</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="stat-value" id="modalHours">156</div>
+                            <div class="stat-label">Study Hours</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-interests">
+                        <h4>Interests</h4>
+                        <div class="interest-tags" id="modalInterests">
+                            <!-- Interests will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="friend-actions">
+                        <button class="btn" id="sendMessageBtn">Send Message</button>
+                        <button class="btn btn-outline" id="viewCoursesBtn">View Courses</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data
+        const suggestedFriends = [
+            {
+                id: 1,
+                name: "Sarah Chen",
+                major: "Computer Science",
+                interests: ["Programming", "AI", "Data Science"],
+                avatar: "SC",
+                courses: 12,
+                friends: 47,
+                hours: 156,
+                bio: "Passionate about AI and machine learning. Currently working on a research project about natural language processing."
+            },
+            {
+                id: 2,
+                name: "Mike Johnson",
+                major: "Mathematics",
+                interests: ["Calculus", "Statistics", "Linear Algebra"],
+                avatar: "MJ",
+                courses: 8,
+                friends: 32,
+                hours: 89,
+                bio: "Math enthusiast with a focus on applied mathematics. Love solving complex problems and helping others understand math concepts."
+            },
+            {
+                id: 3,
+                name: "Emma Wilson",
+                major: "Biology",
+                interests: ["Genetics", "Chemistry", "Research"],
+                avatar: "EW",
+                courses: 10,
+                friends: 28,
+                hours: 120,
+                bio: "Aspiring biologist with a passion for genetics and molecular biology. Currently interning at a research lab."
+            },
+            {
+                id: 4,
+                name: "David Kim",
+                major: "Business",
+                interests: ["Marketing", "Economics", "Entrepreneurship"],
+                avatar: "DK",
+                courses: 6,
+                friends: 41,
+                hours: 75,
+                bio: "Business student with an entrepreneurial mindset. Interested in startups and digital marketing strategies."
+            },
+            {
+                id: 5,
+                name: "Lisa Wang",
+                major: "Engineering",
+                interests: ["Robotics", "Physics", "Innovation"],
+                avatar: "LW",
+                courses: 14,
+                friends: 36,
+                hours: 210,
+                bio: "Mechanical engineering student with a focus on robotics. Participated in several robotics competitions."
+            },
+            {
+                id: 6,
+                name: "Alex Rodriguez",
+                major: "Computer Science",
+                interests: ["Web Development", "UX Design", "Mobile Apps"],
+                avatar: "AR",
+                courses: 9,
+                friends: 29,
+                hours: 110,
+                bio: "Full-stack developer with experience in multiple programming languages. Love creating user-friendly applications."
+            }
+        ];
+
+        const friendRequests = [
+            {
+                id: 101,
+                name: "James Miller",
+                major: "Physics",
+                mutualFriends: 3,
+                avatar: "JM"
+            },
+            {
+                id: 102,
+                name: "Sophia Garcia",
+                major: "Psychology",
+                mutualFriends: 5,
+                avatar: "SG"
+            },
+            {
+                id: 103,
+                name: "Daniel Lee",
+                major: "Economics",
+                mutualFriends: 2,
+                avatar: "DL"
+            }
+        ];
+
+        const myFriends = [
+            {
+                id: 201,
+                name: "Olivia Brown",
+                major: "Chemistry",
+                status: "Online",
+                lastActive: "Just now",
+                avatar: "OB"
+            },
+            {
+                id: 202,
+                name: "Noah Smith",
+                major: "Computer Science",
+                status: "Studying",
+                lastActive: "10 minutes ago",
+                avatar: "NS"
+            },
+            {
+                id: 203,
+                name: "Ava Johnson",
+                major: "Art History",
+                status: "Away",
+                lastActive: "1 hour ago",
+                avatar: "AJ"
+            },
+            {
+                id: 204,
+                name: "Liam Davis",
+                major: "Political Science",
+                status: "Online",
+                lastActive: "5 minutes ago",
+                avatar: "LD"
+            },
+            {
+                id: 205,
+                name: "Isabella Martinez",
+                major: "Biology",
+                status: "Studying",
+                lastActive: "30 minutes ago",
+                avatar: "IM"
+            }
+        ];
+
+        // DOM Elements
+        const friendsTabs = document.querySelectorAll('.friends-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const findFriendsBtn = document.getElementById('findFriendsBtn');
+        const viewRequestsBtn = document.getElementById('viewRequestsBtn');
+        const viewAllFriendsBtn = document.getElementById('viewAllFriendsBtn');
+        const searchFriendsBtn = document.getElementById('searchFriendsBtn');
+        const searchFriendsInput = document.getElementById('searchFriendsInput');
+        const majorFilter = document.getElementById('majorFilter');
+        const interestsFilter = document.getElementById('interestsFilter');
+        const suggestedFriendsContainer = document.getElementById('suggestedFriends');
+        const friendRequestsContainer = document.getElementById('friendRequests');
+        const myFriendsContainer = document.getElementById('myFriends');
+        const friendProfileModal = document.getElementById('friendProfileModal');
+        const closeModal = document.querySelector('.close-modal');
+        const sendMessageBtn = document.getElementById('sendMessageBtn');
+        const viewCoursesBtn = document.getElementById('viewCoursesBtn');
+
+        // Initialize the page
+        function initializePage() {
+            renderSuggestedFriends(suggestedFriends);
+            renderFriendRequests(friendRequests);
+            renderMyFriends(myFriends);
+            
+            // Set friends count
+            document.getElementById('friendsCount').textContent = myFriends.length;
+            document.getElementById('requestsCount').textContent = friendRequests.length;
+        }
+
+        // Render suggested friends
+        function renderSuggestedFriends(friends) {
+            suggestedFriendsContainer.innerHTML = '';
+            
+            friends.forEach(friend => {
+                const friendCard = document.createElement('div');
+                friendCard.className = 'friend-card';
+                friendCard.innerHTML = `
+                    <div class="friend-avatar">${friend.avatar}</div>
+                    <div class="friend-content">
+                        <h3 class="friend-name">${friend.name}</h3>
+                        <div class="friend-major">${friend.major}</div>
+                        <div class="friend-interests">${friend.interests.join(', ')}</div>
+                        <div class="friend-actions">
+                            <button class="btn btn-small" data-id="${friend.id}" data-action="view">View Profile</button>
+                            <button class="btn btn-small btn-secondary" data-id="${friend.id}" data-action="add">Add Friend</button>
+                        </div>
+                    </div>
+                `;
+                suggestedFriendsContainer.appendChild(friendCard);
+            });
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('[data-action="view"]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const friendId = e.target.getAttribute('data-id');
+                    const friend = suggestedFriends.find(f => f.id == friendId);
+                    openFriendProfile(friend);
+                });
+            });
+            
+            document.querySelectorAll('[data-action="add"]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const friendId = e.target.getAttribute('data-id');
+                    addFriend(friendId);
+                });
+            });
+        }
+
+        // Render friend requests
+        function renderFriendRequests(requests) {
+            friendRequestsContainer.innerHTML = '';
+            
+            if (requests.length === 0) {
+                friendRequestsContainer.innerHTML = '<p>No pending friend requests.</p>';
+                return;
+            }
+            
+            requests.forEach(request => {
+                const requestItem = document.createElement('div');
+                requestItem.className = 'request-item';
+                requestItem.innerHTML = `
+                    <div class="request-avatar">${request.avatar}</div>
+                    <div class="request-info">
+                        <div class="request-name">${request.name}</div>
+                        <div class="request-meta">${request.major} • ${request.mutualFriends} mutual friends</div>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn btn-small" data-id="${request.id}" data-action="accept">Accept</button>
+                        <button class="btn btn-small btn-outline" data-id="${request.id}" data-action="decline">Decline</button>
+                    </div>
+                `;
+                friendRequestsContainer.appendChild(requestItem);
+            });
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('[data-action="accept"]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const requestId = e.target.getAttribute('data-id');
+                    acceptFriendRequest(requestId);
+                });
+            });
+            
+            document.querySelectorAll('[data-action="decline"]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const requestId = e.target.getAttribute('data-id');
+                    declineFriendRequest(requestId);
+                });
+            });
+        }
+
+        // Render my friends
+        function renderMyFriends(friends) {
+            myFriendsContainer.innerHTML = '';
+            
+            if (friends.length === 0) {
+                myFriendsContainer.innerHTML = '<p>You haven\'t added any friends yet.</p>';
+                return;
+            }
+            
+            friends.forEach(friend => {
+                const friendItem = document.createElement('div');
+                friendItem.className = 'friend-item';
+                friendItem.innerHTML = `
+                    <div class="friend-item-avatar">${friend.avatar}</div>
+                    <div class="friend-item-info">
+                        <div class="friend-item-name">${friend.name}</div>
+                        <div class="friend-item-status">${friend.status} • ${friend.lastActive}</div>
+                    </div>
+                    <div class="friend-item-actions">
+                        <button class="btn btn-small" data-id="${friend.id}" data-action="message">Message</button>
+                        <button class="btn btn-small btn-outline" data-id="${friend.id}" data-action="view">View Profile</button>
+                    </div>
+                `;
+                myFriendsContainer.appendChild(friendItem);
+            });
+            
+            // Add event listeners to buttons
+            document.querySelectorAll('[data-action="message"]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const friendId = e.target.getAttribute('data-id');
+                    messageFriend(friendId);
+                });
+            });
+            
+            document.querySelectorAll('[data-action="view"]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const friendId = e.target.getAttribute('data-id');
+                    const friend = myFriends.find(f => f.id == friendId);
+                    openFriendProfile(friend);
+                });
+            });
+        }
+
+        // Tab Switching
+        friendsTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                
+                friendsTabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+            });
+        });
+
+        // Navigation buttons
+        findFriendsBtn.addEventListener('click', () => {
+            friendsTabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            document.querySelector('[data-tab="find"]').classList.add('active');
+            document.getElementById('findTab').classList.add('active');
+        });
+
+        viewRequestsBtn.addEventListener('click', () => {
+            friendsTabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            document.querySelector('[data-tab="requests"]').classList.add('active');
+            document.getElementById('requestsTab').classList.add('active');
+        });
+
+        viewAllFriendsBtn.addEventListener('click', () => {
+            friendsTabs.forEach(t => t.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+            
+            document.querySelector('[data-tab="list"]').classList.add('active');
+            document.getElementById('listTab').classList.add('active');
+        });
+
+        // Search functionality
+        searchFriendsBtn.addEventListener('click', performSearch);
+        searchFriendsInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            const query = searchFriendsInput.value.toLowerCase();
+            const major = majorFilter.value;
+            const interest = interestsFilter.value;
+            
+            let filteredFriends = suggestedFriends.filter(friend => {
+                const matchesQuery = !query || 
+                    friend.name.toLowerCase().includes(query) ||
+                    friend.major.toLowerCase().includes(query) ||
+                    friend.interests.some(i => i.toLowerCase().includes(query));
+                
+                const matchesMajor = !major || friend.major === major;
+                const matchesInterest = !interest || friend.interests.includes(interest);
+                
+                return matchesQuery && matchesMajor && matchesInterest;
+            });
+            
+            renderSuggestedFriends(filteredFriends);
+        }
+
+        // Friend actions
+        function addFriend(friendId) {
+            const friend = suggestedFriends.find(f => f.id == friendId);
+            alert(`Friend request sent to ${friend.name}!`);
+            // In a real app, you would send this to the server
+        }
+
+        function acceptFriendRequest(requestId) {
+            const request = friendRequests.find(r => r.id == requestId);
+            alert(`You are now friends with ${request.name}!`);
+            // In a real app, you would update the server and UI
+        }
+
+        function declineFriendRequest(requestId) {
+            const request = friendRequests.find(r => r.id == requestId);
+            alert(`Friend request from ${request.name} declined.`);
+            // In a real app, you would update the server and UI
+        }
+
+        function messageFriend(friendId) {
+            const friend = myFriends.find(f => f.id == friendId);
+            alert(`Opening chat with ${friend.name}`);
+            // In a real app, you would open a chat interface
+        }
+
+        // Friend profile modal
+        function openFriendProfile(friend) {
+            document.getElementById('modalAvatar').textContent = friend.avatar;
+            document.getElementById('modalName').textContent = friend.name;
+            document.getElementById('modalMajor').textContent = friend.major;
+            document.getElementById('modalBio').textContent = friend.bio || 'No bio available.';
+            document.getElementById('modalCourses').textContent = friend.courses || 'N/A';
+            document.getElementById('modalFriends').textContent = friend.friends || 'N/A';
+            document.getElementById('modalHours').textContent = friend.hours || 'N/A';
+            
+            const interestsContainer = document.getElementById('modalInterests');
+            interestsContainer.innerHTML = '';
+            
+            if (friend.interests && friend.interests.length > 0) {
+                friend.interests.forEach(interest => {
+                    const tag = document.createElement('span');
+                    tag.className = 'interest-tag';
+                    tag.textContent = interest;
+                    interestsContainer.appendChild(tag);
+                });
+            } else {
+                interestsContainer.innerHTML = '<span>No interests listed</span>';
+            }
+            
+            friendProfileModal.style.display = 'flex';
+        }
+
+        closeModal.addEventListener('click', () => {
+            friendProfileModal.style.display = 'none';
+        });
+
+        sendMessageBtn.addEventListener('click', () => {
+            const friendName = document.getElementById('modalName').textContent;
+            alert(`Opening chat with ${friendName}`);
+            friendProfileModal.style.display = 'none';
+        });
+
+        
