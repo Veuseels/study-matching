@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>StudyMatch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Main Page -->
+        <div id="mainPage">
+            <div class="header">
+                <div class="header-left">
+                    <h1>📚 StudyMatch</h1>
+                    <p id="welcomeMsg">Welcome</p>
+                </div>
+                <div class="header-right">
+                    <div class="profile-icon" id="profileIcon" title="View Profile">👤</div>
+                    <button id="signOutBtn">Sign Out</button>
+                </div>
+            </div>
+
+            <div class="match-widget">
+                <h3>🔥 Find Your Study Partner</h3>
+                <p>Swipe through profiles and connect with people who share your interests!</p>
+                <button class="match-btn" id="goToSwipeBtn">Match People with Same Interest</button>
+            </div>
+
+            <div class="card">
+                <div class="search-bar">
+                    <input id="searchInput" class="search-input" placeholder="Search by name, major, skills or needs" />
+                    <button id="searchBtn" class="search-btn">Search</button>
+                </div>
+                <p class="search-hint">Search across profiles to find study partners.</p>
+            </div>
+
+            <div id="profileArea" class="card hidden">
+                <h2>Build Your Profile</h2>
+                <input type="text" id="major" placeholder="Major (e.g. Computer Science)" />
+                <input type="text" id="skills" placeholder="Skills you can teach" />
+                <input type="text" id="needs" placeholder="Subjects you need help in" />
+                <button id="saveProfileBtn">Save Profile</button>
+            </div>
+
+            <div id="matchArea" class="hidden">
+                <h2>Suggested Matches</h2>
+                <div id="results"></div>
+            </div>
+        </div>
+
+        <!-- Swipe Page -->
+        <div id="swipePage" class="hidden">
+            <a href="#" class="back-btn" id="backToMain">← Back to Main</a>
+            <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Find Your Match</h2>
+            
+            <div class="swipe-container" id="swipeContainer">
+                <div class="swipe-indicator like">LIKE</div>
+                <div class="swipe-indicator skip">PASS</div>
+                <!-- Cards will be inserted here -->
+            </div>
+
+            <div class="swipe-actions">
+                <button class="swipe-btn skip" id="skipBtn">✕</button>
+                <button class="swipe-btn like" id="likeBtn">♥</button>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profilePage" class="hidden profile-page">
+            <a href="#" class="back-btn" id="backToMainFromProfile">← Back to Main</a>
+            
+            <div class="profile-header">
+                <div class="profile-avatar" id="profileAvatar">👤</div>
+                <h2 id="profileName">User Profile</h2>
+            </div>
+
+            <div class="profile-section">
+                <h3>📚 Major</h3>
+                <p id="profileMajor">Not set</p>
+            </div>
+
+            <div class="profile-section">
+                <h3>✨ Skills I Can Teach</h3>
+                <p id="profileSkills">Not set</p>
+            </div>
+
+            <div class="profile-section">
+                <h3>📖 Subjects I Need Help With</h3>
+                <p id="profileNeeds">Not set</p>
+            </div>
+
+            <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.min.js"></script>
+    <script src="supabase-config.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
