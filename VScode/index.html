@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StudyMatch - Find Your Study Buddy</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="container">
+
+        <h1>📚 StudyMatch</h1>
+        <p>Find students to study with based on your major, skills, and goals.</p>
+
+        <div id="loginArea" class="card">
+            <h2>Sign In</h2>
+            <input type="text" placeholder="Enter your name" id="nameInput" />
+            <button onclick="startApp()">Continue</button>
+        </div>
+
+        <div id="profileArea" class="hidden">
+            <h2>Build Your Profile</h2>
+            <input type="text" id="major" placeholder="Major (e.g. Computer Science)" />
+            <input type="text" id="skills" placeholder="Skills you can teach" />
+            <input type="text" id="needs" placeholder="Subjects you need help in" />
+            <button onclick="saveProfile()">Save Profile</button>
+        </div>
+
+        <div id="matchArea" class="hidden">
+            <h2>Suggested Matches</h2>
+            <div id="results"></div>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
