@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>StudyMatch Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="navbar">
+  <h2>StudyMatch</h2>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<div class="cards-container">
+
+  <div class="card" onclick="goTo('students.html')">
+    <h3>Students</h3>
+    <p>Find peers to study with</p>
+  </div>
+
+  <div class="card" onclick="goTo('chats.html')">
+    <h3>Chats</h3>
+    <p>View and continue conversations</p>
+  </div>
+
+  <div class="card" onclick="goTo('rooms.html')">
+    <h3>Study Rooms</h3>
+    <p>Join or create group study rooms</p>
+  </div>
+
+  <div class="card" onclick="goTo('profile.html')">
+    <h3>Your Profile</h3>
+    <p>Update your info and interests</p>
+  </div>
+
+</div>
+
+<script type="module" src="home.js"></script>
+
+</body>
+</html>

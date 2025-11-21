@@ -36,3 +36,21 @@
     <script src="app.js"></script>
 </body>
 </html>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyB06m1EWYkTwBYtuCFsoYEvrAJXTWwK9ng",
+  authDomain: "studymatching-5fca9.firebaseapp.com",
+  projectId: "studymatching-5fca9",
+  storageBucket: "studymatching-5fca9.firebasestorage.app",
+  messagingSenderId: "758409019844",
+  appId: "1:758409019844:web:1ba3cba86a8f345b622491",
+  measurementId: "G-789W063SCG"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>

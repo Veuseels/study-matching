@@ -48,3 +48,42 @@ button:hover {
     border-radius: 12px;
     background: #fafafa;
 }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f7f8fc;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background: #4a74f5;
+  padding: 15px;
+  color: white;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 30px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+.card h3 {
+  margin: 0;
+  margin-bottom: 10px;
+}
