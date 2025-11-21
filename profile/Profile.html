@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - EduConnect</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --white: #ffffff;
+            --danger-color: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--white);
+            border-bottom: 1px solid #eee;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-right: 2rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark-color);
+        }
+        
+        .nav-tabs {
+            display: flex;
+        }
+        
+        .nav-tab {
+            padding: 0.5rem 1rem;
+            margin-right: 1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            color: var(--dark-color);
+        }
+        
+        .nav-tab:hover, .nav-tab.active {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+        }
+        
+        .user-profile {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Profile Container */
+        .profile-container {
+            display: flex;
+            margin: 2rem 0;
+            gap: 2rem;
+        }
+        
+        /* Profile Sidebar */
+        .profile-sidebar {
+            width: 300px;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .avatar-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            background-size: cover;
+            background-position: center;
+            border: 4px solid var(--white);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .avatar-upload {
+            position: absolute;
+            bottom: 10px;
+            right: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .avatar-upload input {
+            display: none;
+        }
+        
+        .profile-name {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-title {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        /* Profile Content */
+        .profile-content {
+            flex: 1;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .profile-tab.active {
+            border-bottom: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .form-group.readonly input {
+            background-color: #f9f9f9;
+            color: #666;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #27ae60;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        /* Courses Grid */
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .course-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .course-img {
+            height: 120px;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+        
+        .course-content {
+            padding: 1.5rem;
+        }
+        
+        .course-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .course-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .course-progress {
+            margin-top: 1rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--secondary-color);
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-container {
+                flex-direction: column;
+            }
+            
+            .profile-sidebar {
+                width: 100%;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .nav-tab {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <div class="logo-icon">EC</div>
+            <div class="logo-text">EduConnect</div>
+        </div>
+        <div class="nav-tabs">
+            <a href="index.html" class="nav-tab">Home</a>
+            <a href="teachers.html" class="nav-tab">Teachers</a>
+            <a href="courses.html" class="nav-tab">Courses</a>
+            <a href="friends.html" class="nav-tab">Friends</a>
+            <a href="profile.html" class="nav-tab active">Profile</a>
+        </div>
+        <div class="user-profile">
+            <div class="user-avatar" id="headerAvatar">JD</div>
+            <div id="headerUserName">John Doe</div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="profile-container">
+            <!-- Profile Sidebar -->
+            <div class="profile-sidebar">
+                <div class="avatar-container">
+                    <div class="profile-avatar" id="profileAvatar">JD</div>
+                    <div class="avatar-upload">
+                        <i>📷</i>
+                        <input type="file" id="avatarInput" accept="image/*">
+                    </div>
+                </div>
+                <h2 class="profile-name" id="profileName">John Doe</h2>
+                <div class="profile-title" id="profileTitle">Student</div>
+                
+                <div class="profile-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="coursesCount">3</div>
+                        <div class="stat-label">Courses</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="friendsCount">24</div>
+                        <div class="stat-label">Friends</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="hoursCount">42</div>
+                        <div class="stat-label">Hours</div>
+                    </div>
+                </div>
+                
+                <div class="member-since">
+                    Member since: <span id="memberSince">March 2023</span>
+                </div>
+            </div>
+            
+            <!-- Profile Content -->
+            <div class="profile-content">
+                <div class="profile-header">
+                    <h1>My Profile</h1>
+                    <button class="btn btn-outline" id="editProfileBtn">Edit Profile</button>
+                </div>
+                
+                <div class="profile-tabs">
+                    <div class="profile-tab active" data-tab="personal">Personal Info</div>
+                    <div class="profile-tab" data-tab="courses">My Courses</div>
+                    <div class="profile-tab" data-tab="security">Security</div>
+                </div>
+                
+                <!-- Personal Info Tab -->
+                <div class="tab-content active" id="personalTab">
+                    <form id="personalInfoForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" value="John" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" value="Doe" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" value="john.doe@example.com" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="userType">Account Type</label>
+                                <select id="userType" disabled>
+                                    <option value="student" selected>Student</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="public">Public User</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="region">Region</label>
+                                <input type="text" id="region" value="North America" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <input type="text" id="country" value="United States" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="school">School/Institution</label>
+                                <input type="text" id="school" value="Stanford University" readonly>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="interests">Interests</label>
+                                <textarea id="interests" rows="3" readonly>English literature, Programming, Photography, Travel</textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label for="bio">Bio</label>
+                                <textarea id="bio" rows="4" readonly>I'm a passionate learner who loves exploring new cultures through language. Currently studying Computer Science and improving my English communication skills.</textarea>
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons" id="personalActionButtons" style="display: none;">
+                            <button type="button" class="btn" id="savePersonalBtn">Save Changes</button>
+                            <button type="button" class="btn btn-outline" id="cancelPersonalBtn">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- My Courses Tab -->
+                <div class="tab-content" id="coursesTab">
+                    <h2>My Enrolled Courses</h2>
+                    <p>Here are the courses you're currently taking:</p>
+                    
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-img">💼</div>
+                            <div class="course-content">
+                                <h3 class="course-title">Business Communication</h3>
+                                <p class="course-description">Master professional communication for meetings and presentations.</p>
+                                <div class="course-meta">
+                                    <div class="course-teacher">Sarah Johnson</div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 65%"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        <span>Progress</span>
+                                        <span>65%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-img">🔤</div>
+                            <div class="course-content">
+                                <h3 class="course-title">Grammar Fundamentals</h3>
+                                <p class="course-description">Build a strong foundation in English grammar rules.</p>
+                                <div class="course-meta">
+                                    <div class="course-teacher">Michael Chen</div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 40%"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        <span>Progress</span>
+                                        <span>40%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-img">🗣️</div>
+                            <div class="course-content">
+                                <h3 class="course-title">Conversation Practice</h3>
+                                <p class="course-description">Improve your speaking skills through guided conversations.</p>
+                                <div class="course-meta">
+                                    <div class="course-teacher">Emma Wilson</div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 80%"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        <span>Progress</span>
+                                        <span>80%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Tab -->
+                <div class="tab-content" id="securityTab">
+                    <h2>Account Security</h2>
+                    <p>Manage your password and account security settings.</p>
+                    
+                    <form id="securityForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="currentPassword">Current Password</label>
+                                <input type="password" id="currentPassword" placeholder="Enter current password">
+                            </div>
+                            <div class="form-group"></div> <!-- Empty for spacing -->
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword" placeholder="Enter new password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button type="button" class="btn" id="saveSecurityBtn">Update Password</button>
+                        </div>
+                    </form>
+                    
+                    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #eee;">
+                        <h3>Danger Zone</h3>
+                        <p>Permanently delete your account and all associated data. This action cannot be undone.</p>
+                        <button class="btn btn-danger" id="deleteAccountBtn" style="margin-top: 1rem;">Delete Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const profileTabs = document.querySelectorAll('.profile-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const personalInfoForm = document.getElementById('personalInfoForm');
+        const personalInputs = personalInfoForm.querySelectorAll('input, select, textarea');
+        const personalActionButtons = document.getElementById('personalActionButtons');
+        const savePersonalBtn = document.getElementById('savePersonalBtn');
+        const cancelPersonalBtn = document.getElementById('cancelPersonalBtn');
+        const avatarInput = document.getElementById('avatarInput');
+        const profileAvatar = document.getElementById('profileAvatar');
+        const headerAvatar = document.getElementById('headerAvatar');
+        const saveSecurityBtn = document.getElementById('saveSecurityBtn');
+        const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+        
+        // Sample user data
+        let userData = {
+            firstName: "John",
+            lastName: "Doe",
+            email: "john.doe@example.com",
+            userType: "student",
+            region: "North America",
+            country: "United States",
+            school: "Stanford University",
+            interests: "English literature, Programming, Photography, Travel",
+            bio: "I'm a passionate learner who loves exploring new cultures through language. Currently studying Computer Science and improving my English communication skills.",
+            avatar: null,
+            joinDate: "March 2023",
+            courses: 3,
+            friends: 24,
+            hours: 42
+        };
+        
+        // Initialize profile with user data
+        function initializeProfile() {
+            document.getElementById('firstName').value = userData.firstName;
+            document.getElementById('lastName').value = userData.lastName;
+            document.getElementById('email').value = userData.email;
+            document.getElementById('userType').value = userData.userType;
+            document.getElementById('region').value = userData.region;
+            document.getElementById('country').value = userData.country;
+            document.getElementById('school').value = userData.school;
+            document.getElementById('interests').value = userData.interests;
+            document.getElementById('bio').value = userData.bio;
+            document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
+            document.getElementById('profileTitle').textContent = userData.userType.charAt(0).toUpperCase() + userData.userType.slice(1);
+            document.getElementById('headerUserName').textContent = `${userData.firstName} ${userData.lastName}`;
+            document.getElementById('memberSince').textContent = userData.joinDate;
+            document.getElementById('coursesCount').textContent = userData.courses;
+            document.getElementById('friendsCount').textContent = userData.friends;
+            document.getElementById('hoursCount').textContent = userData.hours;
+            
+            // Set avatar initials
+            const initials = userData.firstName[0] + userData.lastName[0];
+            profileAvatar.textContent = initials;
+            headerAvatar.textContent = initials;
+            
+            // If avatar image exists, use it
+            if (userData.avatar) {
+                profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
+                profileAvatar.textContent = '';
+                headerAvatar.style.backgroundImage = `url(${userData.avatar})`;
+                headerAvatar.textContent = '';
+            }
+        }
+        
+        // Tab Switching
+        profileTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                
+                profileTabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(`${tabName}Tab`).classList.add('active');
+            });
+        });
+        
+        // Edit Profile Toggle
+        let isEditing = false;
+        
+        editProfileBtn.addEventListener('click', () => {
+            if (!isEditing) {
+                // Enable editing
+                personalInputs.forEach(input => {
+                    if (input.id !== 'email' && input.id !== 'userType') {
+                        input.readOnly = false;
+                        input.disabled = false;
+                        input.parentElement.classList.remove('readonly');
+                    }
+                });
+                personalActionButtons.style.display = 'flex';
+                editProfileBtn.textContent = 'View Profile';
+                isEditing = true;
+            } else {
+                // Disable editing
+                personalInputs.forEach(input => {
+                    input.readOnly = true;
+                    if (input.id === 'userType') {
+                        input.disabled = true;
+                    }
+                    input.parentElement.classList.add('readonly');
+                });
+                personalActionButtons.style.display = 'none';
+                editProfileBtn.textContent = 'Edit Profile';
+                isEditing = false;
+            }
+        });
+        
+        // Save Personal Info
+        savePersonalBtn.addEventListener('click', () => {
+            // Update user data
+            userData.firstName = document.getElementById('firstName').value;
+            userData.lastName = document.getElementById('lastName').value;
+            userData.region = document.getElementById('region').value;
+            userData.country = document.getElementById('country').value;
+            userData.school = document.getElementById('school').value;
+            userData.interests = document.getElementById('interests').value;
+            userData.bio = document.getElementById('bio').value;
+            
+            // Update displayed name
+            document.getElementById('profileName').textContent = `${userData.firstName} ${userData.lastName}`;
+            document.getElementById('headerUserName').textContent = `${userData.firstName} ${userData.lastName}`;
+            
+            // Update avatar initials
+            const initials = userData.firstName[0] + userData.lastName[0];
+            profileAvatar.textContent = initials;
+            headerAvatar.textContent = initials;
+            
+            // If avatar image exists, use it
+            if (userData.avatar) {
+                profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
+                profileAvatar.textContent = '';
+                headerAvatar.style.backgroundImage = `url(${userData.avatar})`;
+                headerAvatar.textContent = '';
+            }
+            
+            // Disable editing
+            personalInputs.forEach(input => {
+                input.readOnly = true;
+                if (input.id === 'userType') {
+                    input.disabled = true;
+                }
+                input.parentElement.classList.add('readonly');
+            });
+            personalActionButtons.style.display = 'none';
+            editProfileBtn.textContent = 'Edit Profile';
+            isEditing = false;
+            
+            // Show success message
+            alert('Profile updated successfully!');
+        });
+        
+        // Cancel Personal Info Editing
+        cancelPersonalBtn.addEventListener('click', () => {
+            // Reset form to original values
+            document.getElementById('firstName').value = userData.firstName;
+            document.getElementById('lastName').value = userData.lastName;
+            document.getElementById('region').value = userData.region;
+            document.getElementById('country').value = userData.country;
+            document.getElementById('school').value = userData.school;
+            document.getElementById('interests').value = userData.interests;
+            document.getElementById('bio').value = userData.bio;
+            
+            // Disable editing
+            personalInputs.forEach(input => {
+                input.readOnly = true;
+                if (input.id === 'userType') {
+                    input.disabled = true;
+                }
+                input.parentElement.classList.add('readonly');
+            });
+            personalActionButtons.style.display = 'none';
+            editProfileBtn.textContent = 'Edit Profile';
+            isEditing = false;
+        });
+        
+        // Avatar Upload
+        avatarInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
+                    userData.avatar = imageUrl;
+                    
+                    // Update avatars
+                    profileAvatar.style.backgroundImage = `url(${imageUrl})`;
+                    profileAvatar.textContent = '';
+                    headerAvatar.style.backgroundImage = `url(${imageUrl})`;
+                    headerAvatar.textContent = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        // Update Password
+        saveSecurityBtn.addEventListener('click', () => {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                alert('Please fill in all password fields.');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('New passwords do not match.');
+                return;
+            }
+            
+            if (newPassword.length < 6) {
+                alert('New password must be at least 6 characters long.');
+                return;
+            }
+            
+            // In a real app, you would send this to the server
+            alert('Password updated successfully!');
+            
+            // Clear form
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+        });
+        
+        // Delete Account
+        deleteAccountBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                alert('Account deletion requested. In a real application, this would trigger the account deletion process.');
+                // In a real app, you would send a request to the server to delete the account
+            }
+        });
+        
+        // Initialize the profile when the page loads
+        document.addEventListener('DOMContentLoaded', initializeProfile);
+    </script>
+</body>
+</html>
