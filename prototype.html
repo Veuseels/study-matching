@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fff;
+            color: #000;
+        }
+
+        /* Header Styles */
+        .header {
+            background: #000;
+            color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            color: #000;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .nav-btn:hover {
+            background: #333;
+        }
+
+        .nav-btn.active {
+            background: #fff;
+            color: #000;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-type {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* Avatar Dropdown */
+        .avatar-container {
+            position: relative;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            color: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .avatar-dropdown {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background: #fff;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 0.5rem;
+            display: none;
+            min-width: 150px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 200;
+        }
+
+        .avatar-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: transparent;
+        }
+
+        .avatar-container:hover .avatar-dropdown {
+            display: block;
+        }
+
+        .avatar-dropdown-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #000;
+            display: block;
+            transition: background 0.2s;
+        }
+
+        .avatar-dropdown-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .avatar-dropdown-btn:active {
+            background: #d0d0d0;
+        }
+
+        /* Page Styles */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            background: #000;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #333;
+        }
+
+        .btn-outline {
+            background: #fff;
+            color: #000;
+        }
+
+        .btn-outline:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 14px;
+        }
+
+        /* Welcome Section */
+        .welcome h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome p {
+            color: #666;
+        }
+
+        /* Match Widget */
+        .match-widget {
+            background: #000;
+            color: #fff;
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .match-widget h2 {
+            margin: 1rem 0;
+        }
+
+        .match-widget p {
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Search Box */
+        .search-box {
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+        }
+
+        /* Profile Grid */
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .profile-card {
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background: #f9f9f9;
+        }
+
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Swipe Card Styles */
+        .swipe-container {
+            position: relative;
+            max-width: 500px;
+            height: 520px;
+            margin: 2rem auto;
+        }
+
+        .swipe-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .swipe-avatar {
+            width: 96px;
+            height: 96px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .swipe-indicator {
+            position: absolute;
+            font-size: 4rem;
+            font-weight: 700;
+            opacity: 0;
+        }
+
+        .swipe-indicator.like {
+            top: 3rem;
+            right: 3rem;
+            color: #000;
+        }
+
+        .swipe-indicator.skip {
+            top: 3rem;
+            left: 3rem;
+            color: #ef4444;
+        }
+
+        .swipe-actions {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .swipe-btn {
+            width: 64px;
+            height: 64px;
+            border: 4px solid #000;
+            border-radius: 50%;
+            background: #fff;
+            font-size: 1.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .swipe-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .swipe-btn.skip:hover {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: #fff;
+        }
+
+        .swipe-btn.like:hover {
+            background: #000;
+            color: #fff;
+        }
+
+        /* Profile Page Layout */
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .profile-sidebar {
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .profile-avatar-large {
+            width: 128px;
+            height: 128px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: center;
+            padding: 1rem 0;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+            margin: 1rem 0;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+        }
+
+        .profile-content {
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #000;
+            margin-bottom: 2rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 4px solid transparent;
+            margin-bottom: -2px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .tab.active {
+            border-bottom-color: #000;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+        }
+
+        .form-group input:disabled,
+        .form-group textarea:disabled {
+            background: #f5f5f5;
+        }
+
+        /* Chat Layout */
+        .chats-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2rem;
+        }
+
+        .chat-list {
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 1.5rem;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .chat-list-item {
+            padding: 1rem;
+            border: 2px solid #000;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chat-list-item:hover {
+            background: #f5f5f5;
+        }
+
+        .chat-list-item.active {
+            background: #000;
+            color: #fff;
+        }
+
+        .chat-area {
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #000;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .chat-header-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .messages {
+            flex: 1;
+            min-height: 350px;
+            max-height: 450px;
+            border: 2px solid #000;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+        }
+
+        .message.me {
+            text-align: right;
+        }
+
+        .message-bubble {
+            display: inline-block;
+            max-width: 70%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+        }
+
+        .message.me .message-bubble {
+            background: #000;
+            color: #fff;
+        }
+
+        .message:not(.me) .message-bubble {
+            background: #fff;
+            border: 2px solid #000;
+        }
+
+        .message-meta {
+            font-size: 11px;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .message-input-box {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .message-input-box input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border: 4px solid #000;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .friend-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .friend-checkbox:hover {
+            background: #f5f5f5;
+        }
+
+        .friend-checkbox input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .friend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border: 2px solid #000;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .friend-item:hover {
+            background: #f5f5f5;
+        }
+
+        .friend-item-avatar {
+            width: 36px;
+            height: 36px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-6 {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .profile-layout,
+            .chats-layout {
+                grid-template-columns: 1fr;
+            }
+            .nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <a class="logo" onclick="showPage('home')">
+                    <div class="logo-icon">EC</div>
+                    <div class="logo-text">EduConnect</div>
+                </a>
+                <nav class="nav">
+                    <button class="nav-btn active" onclick="showPage('home')">🏠 Home</button>
+                    <button class="nav-btn" onclick="showPage('match')">👥 Match</button>
+                    <button class="nav-btn" onclick="showPage('groupchats')">💬 Groups</button>
+                    <button class="nav-btn" onclick="showPage('messages')">✉️ Messages</button>
+                    <button class="nav-btn" onclick="showPage('profile')">👤 Profile</button>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <div class="user-name" id="userName">John Doe</div>
+                    <div class="user-type">Student</div>
+                </div>
+                <div class="avatar-container">
+                    <div class="avatar" id="userAvatar">JD</div>
+                    <div class="avatar-dropdown">
+                        <button class="avatar-dropdown-btn" onclick="showPage('profile')">👤 Profile</button>
+                        <button class="avatar-dropdown-btn" onclick="handleLogin()">🔑 Log In</button>
+                        <button class="avatar-dropdown-btn" onclick="handleLogout()">🚪 Log Out</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div id="homePage" class="page active">
+        <div class="container">
+            <div class="welcome">
+                <h1>Welcome back, <span id="welcomeName">John</span></h1>
+                <p>Find study partners and grow together</p>
+            </div>
+            <div class="match-widget">
+                <div style="font-size: 3rem;">📚</div>
+                <h2>Find Your Study Partner</h2>
+                <p>Swipe through profiles and connect</p>
+                <button class="btn" onclick="showPage('match')">Start Matching</button>
+            </div>
+            <div class="search-box">
+                <h3 class="mb-4">Search Study Partners</h3>
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Search by name, major, skills...">
+                    <button class="btn">🔍</button>
+                </div>
+            </div>
+            <div>
+                <div class="section-header">
+                    <h3 style="font-size: 1.5rem;">Friends</h3>
+                    <button class="btn-outline btn btn-small" onclick="toggleAllFriends()">
+                        <span id="moreBtn">More</span>
+                    </button>
+                </div>
+                <div class="profiles-grid" id="profilesGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Match Page -->
+    <div id="matchPage" class="page">
+        <div class="container">
+            <h2 class="text-center mb-6" style="font-size: 2rem;">Find Your Match</h2>
+            <div class="swipe-container">
+                <div class="swipe-card" id="swipeCard"></div>
+                <div class="swipe-indicator like" id="likeIndicator">✓</div>
+                <div class="swipe-indicator skip" id="skipIndicator">✕</div>
+            </div>
+            <div class="swipe-actions">
+                <button class="swipe-btn skip" onclick="swipeLeft()">✕</button>
+                <button class="swipe-btn like" onclick="swipeRight()">✓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Group Chats Page -->
+    <div id="groupchatsPage" class="page">
+        <div class="container">
+            <div class="chats-layout">
+                <div class="chat-list">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2>Group Chats</h2>
+                        <button class="btn-small btn" onclick="showCreateGroupModal()">+ Create</button>
+                    </div>
+                    <div id="groupChatsList"></div>
+                </div>
+                <div class="chat-area" id="groupChatArea">
+                    <div class="text-center" style="padding: 4rem 2rem; color: #666;">
+                        <p style="font-size: 3rem; margin-bottom: 1rem;">💬</p>
+                        <p>Select a group chat</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Messages Page -->
+    <div id="messagesPage" class="page">
+        <div class="container">
+            <div class="chats-layout">
+                <div class="chat-list">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h2>Messages</h2>
+                        <button class="btn-small btn" onclick="showNewMessageModal()">+ New</button>
+                    </div>
+                    <div id="privateMessagesList"></div>
+                </div>
+                <div class="chat-area" id="privateMessageArea">
+                    <div class="text-center" style="padding: 4rem 2rem; color: #666;">
+                        <p style="font-size: 3rem; margin-bottom: 1rem;">✉️</p>
+                        <p>Select a friend to message</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profilePage" class="page">
+        <div class="container">
+            <div class="profile-layout">
+                <div class="profile-sidebar">
+                    <div class="profile-avatar-large" id="profileAvatar">JD</div>
+                    <h2 id="profileName">John Doe</h2>
+                    <p style="color: #666; margin-bottom: 1.5rem;">Student</p>
+                    <div class="profile-stats">
+                        <div>
+                            <div class="stat-value">24</div>
+                            <div class="stat-label">Friends</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-content">
+                    <div class="profile-header">
+                        <h1>My Profile</h1>
+                        <button class="btn-outline btn" id="editBtn" onclick="toggleEdit()">✏️ Edit</button>
+                    </div>
+                    <div class="tabs">
+                        <button class="tab active" onclick="showTab('personal')">Personal</button>
+                        <button class="tab" onclick="showTab('security')">Security</button>
+                    </div>
+                    <div id="personalTab" class="tab-content active">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" id="firstName" value="John" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" id="lastName" value="Doe" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Age</label>
+                                <input type="number" id="age" value="21" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" value="john.doe@example.com" disabled>
+                            </div>
+                            <div class="form-group full">
+                                <label>School</label>
+                                <input type="text" id="school" value="Stanford University" disabled>
+                            </div>
+                            <div class="form-group full">
+                                <label>Interests</label>
+                                <textarea id="interests" rows="2" disabled>English literature, Programming</textarea>
+                            </div>
+                            <div class="form-group full">
+                                <label>Bio</label>
+                                <textarea id="bio" rows="2" disabled>Passionate learner exploring new cultures.</textarea>
+                            </div>
+                        </div>
+                        <div id="profileActions" style="display: none; margin-top: 1.5rem; gap: 1rem;">
+                            <button class="btn" onclick="saveProfile()">💾 Save</button>
+                            <button class="btn-outline btn" onclick="cancelEdit()">✕ Cancel</button>
+                        </div>
+                    </div>
+                    <div id="securityTab" class="tab-content">
+                        <h2 class="mb-6">Security</h2>
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label>Current Password</label>
+                                <input type="password">
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm</label>
+                                <input type="password">
+                            </div>
+                        </div>
+                        <button class="btn" style="margin-top: 1rem;">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="createGroupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Group</h2>
+                <button class="close-modal" onclick="closeCreateGroupModal()">✕</button>
+            </div>
+            <div class="form-group mb-4">
+                <label>Group Name</label>
+                <input type="text" id="groupName" placeholder="Enter group name">
+            </div>
+            <div class="mb-4">
+                <label style="font-weight: 700; display: block; margin-bottom: 0.5rem;">Select Friends</label>
+                <div id="friendsCheckboxList"></div>
+            </div>
+            <button class="btn" onclick="createGroupChat()" style="width: 100%;">Create</button>
+        </div>
+    </div>
+
+    <div id="renameGroupModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Rename Group</h2>
+                <button class="close-modal" onclick="closeRenameGroupModal()">✕</button>
+            </div>
+            <div class="form-group mb-4">
+                <label>New Name</label>
+                <input type="text" id="newGroupName">
+            </div>
+            <button class="btn" onclick="renameGroup()" style="width: 100%;">Rename</button>
+        </div>
+    </div>
+
+    <div id="newMessageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Message</h2>
+                <button class="close-modal" onclick="closeNewMessageModal()">✕</button>
+            </div>
+            <div class="mb-4">
+                <label style="font-weight: 700; display: block; margin-bottom: 0.5rem;">Select a Friend</label>
+                <div id="availableFriendsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User Data
+        const userData = {
+            firstName: 'John',
+            lastName: 'Doe',
+            age: 21,
+            school: 'Stanford University',
+            interests: 'English literature, Programming',
+            bio: 'Passionate learner exploring new cultures.'
+        };
+
+        // Profiles Data with age and school
+        const profiles = [
+            { name: 'Sarah Chen', age: 20, school: 'Stanford University', major: 'Computer Science', skills: 'Python, Data Structures', needs: 'Calculus' },
+            { name: 'Mike Johnson', age: 22, school: 'MIT', major: 'Mathematics', skills: 'Calculus, Linear Algebra', needs: 'Programming' },
+            { name: 'Emily Rodriguez', age: 21, school: 'Harvard University', major: 'Biology', skills: 'Chemistry, Lab Techniques', needs: 'Statistics' },
+            { name: 'David Kim', age: 23, school: 'Stanford University', major: 'Physics', skills: 'Quantum Mechanics', needs: 'Programming' },
+            { name: 'Lisa Wang', age: 20, school: 'Yale University', major: 'Business', skills: 'Economics, Marketing', needs: 'Statistics' },
+            { name: 'Alex Turner', age: 22, school: 'MIT', major: 'Engineering', skills: 'CAD, Mechanics', needs: 'Programming' },
+            { name: 'Maya Patel', age: 21, school: 'Princeton', major: 'Psychology', skills: 'Research Methods', needs: 'Statistics' },
+            { name: 'Chris Lee', age: 24, school: 'Stanford University', major: 'Chemistry', skills: 'Organic Chemistry', needs: 'Math' }
+        ];
+
+        // State Variables
+        let showAllFriends = false;
+        let currentMatchIndex = 0;
+        let currentGroupChat = null;
+        let currentPrivateChat = null;
+
+        // Group Chats Data
+        let groupChats = [
+            {
+                id: 1,
+                name: 'Study Group - CS101',
+                members: ['Sarah Chen', 'Mike Johnson', 'You'],
+                messages: [
+                    { from: 'Sarah Chen', text: 'Ready for the exam?', time: '10:30 AM', timestamp: Date.now() - 3600000, me: false },
+                    { from: 'You', text: 'Almost! Reviewing chapter 5', time: '10:32 AM', timestamp: Date.now() - 3500000, me: true }
+                ]
+            },
+            {
+                id: 2,
+                name: 'Math Study Squad',
+                members: ['Mike Johnson', 'David Kim', 'You'],
+                messages: [
+                    { from: 'Mike Johnson', text: 'Meet at library today?', time: '2:15 PM', timestamp: Date.now() - 7200000, me: false }
+                ]
+            },
+            {
+                id: 3,
+                name: 'Project Team',
+                members: ['Emily Rodriguez', 'Lisa Wang', 'You'],
+                messages: [
+                    { from: 'Lisa Wang', text: 'Finished my part!', time: 'Yesterday', timestamp: Date.now() - 86400000, me: false }
+                ]
+            }
+        ];
+
+        // Private Messages Data
+        let privateMessages = [
+            {
+                friend: 'Sarah Chen',
+                lastActivity: Date.now() - 1000000,
+                messages: [
+                    { from: 'Sarah Chen', text: 'Free to study tomorrow?', time: '2:30 PM', timestamp: Date.now() - 1200000, me: false },
+                    { from: 'You', text: 'Yes! What time?', time: '2:32 PM', timestamp: Date.now() - 1000000, me: true }
+                ]
+            },
+            {
+                friend: 'Mike Johnson',
+                lastActivity: Date.now() - 5000000,
+                messages: [
+                    { from: 'Mike Johnson', text: 'Understand the homework?', time: '1:00 PM', timestamp: Date.now() - 5500000, me: false },
+                    { from: 'You', text: 'Yeah, can help later', time: '1:15 PM', timestamp: Date.now() - 5000000, me: true }
+                ]
+            },
+            {
+                friend: 'Emily Rodriguez',
+                lastActivity: Date.now() - 86400000,
+                messages: [
+                    { from: 'Emily Rodriguez', text: 'Thanks for the notes!', time: 'Yesterday', timestamp: Date.now() - 86400000, me: false }
+                ]
+            },
+            {
+                friend: 'David Kim',
+                lastActivity: Date.now() - 90000000,
+                messages: [
+                    { from: 'You', text: 'Want to grab lunch?', time: 'Yesterday', timestamp: Date.now() - 90000000, me: true }
+                ]
+            }
+        ];
+
+        // Authentication Handlers
+        function handleLogin() {
+            alert('Login functionality - You are already logged in as John Doe');
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                alert('Logged out successfully!');
+                location.reload();
+            }
+        }
+
+        // Page Navigation
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(pageName + 'Page').classList.add('active');
+            
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const pageNames = ['home', 'match', 'groupchats', 'messages', 'profile'];
+            const index = pageNames.indexOf(pageName);
+            
+            if (index >= 0 && navButtons[index]) {
+                navButtons[index].classList.add('active');
+            }
+        }
+
+        // Friends Toggle
+        function toggleAllFriends() {
+            showAllFriends = !showAllFriends;
+            document.getElementById('moreBtn').textContent = showAllFriends ? 'Less' : 'More';
+            loadProfiles();
+        }
+
+        // Load Profile Cards
+        function loadProfiles() {
+            const grid = document.getElementById('profilesGrid');
+            const displayProfiles = showAllFriends ? profiles : profiles.slice(0, 4);
+            
+            grid.innerHTML = displayProfiles.map(profile => `
+                <div class="profile-card">
+                    <div class="profile-avatar">${getInitials(profile.name)}</div>
+                    <h4 style="font-size: 1.25rem; margin-bottom: 0.5rem;">${profile.name}</h4>
+                    <p style="font-size: 14px; color: #666; margin-bottom: 0.5rem;"><b>Age:</b> ${profile.age}</p>
+                    <p style="font-size: 14px; color: #666; margin-bottom: 0.5rem;"><b>School:</b> ${profile.school}</p>
+                    <p style="font-size: 14px; color: #666; margin-bottom: 0.5rem;"><b>Major:</b> ${profile.major}</p>
+                    <p style="font-size: 14px; color: #666; margin-bottom: 1rem;"><b>Teaches:</b> ${profile.skills}</p>
+                    <button class="btn" style="width: 100%;" onclick="openPrivateChat('${profile.name}')">Message</button>
+                </div>
+            `).join('');
+        }
+
+        // Get Initials Helper
+        function getInitials(name) {
+            return name.split(' ').map(n => n[0]).join('');
+        }
+
+        // Load Match Card
+        function loadMatch() {
+            const card = document.getElementById('swipeCard');
+            
+            if (currentMatchIndex >= profiles.length) {
+                card.innerHTML = `
+                    <div class="text-center" style="padding: 3rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🎉</div>
+                        <h2>You've seen everyone!</h2>
+                        <p style="color: #666; margin: 1rem 0;">Check back later</p>
+                        <button class="btn" onclick="showPage('home')">Home</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const profile = profiles[currentMatchIndex];
+            card.innerHTML = `
+                <div class="swipe-avatar">${getInitials(profile.name)}</div>
+                <h3 class="text-center mb-4" style="font-size: 1.75rem;">${profile.name}</h3>
+                <div class="mb-4">
+                    <div style="font-size: 11px; font-weight: 700; color: #666;">AGE</div>
+                    <p>${profile.age} years old</p>
+                </div>
+                <div class="mb-4">
+                    <div style="font-size: 11px; font-weight: 700; color: #666;">SCHOOL</div>
+                    <p>${profile.school}</p>
+                </div>
+                <div class="mb-4">
+                    <div style="font-size: 11px; font-weight: 700; color: #666;">MAJOR</div>
+                    <p>${profile.major}</p>
+                </div>
+                <div class="mb-4">
+                    <div style="font-size: 11px; font-weight: 700; color: #666;">CAN TEACH</div>
+                    <p>${profile.skills}</p>
+                </div>
+                <div>
+                    <div style="font-size: 11px; font-weight: 700; color: #666;">NEEDS HELP WITH</div>
+                    <p>${profile.needs}</p>
+                </div>
+            `;
+        }
+
+        // Swipe Functions
+        function swipeLeft() {
+            currentMatchIndex++;
+            loadMatch();
+        }
+
+        function swipeRight() {
+            currentMatchIndex++;
+            loadMatch();
+        }
+
+        // Group Chats Functions
+        function loadGroupChats() {
+            const list = document.getElementById('groupChatsList');
+            list.innerHTML = groupChats.map(chat => `
+                <div class="chat-list-item" onclick="openGroupChat(${chat.id})" data-id="${chat.id}">
+                    <h4 style="margin-bottom: 0.5rem;">${chat.name}</h4>
+                    <p style="font-size: 12px; color: #666;">${chat.members.length} members</p>
+                </div>
+            `).join('');
+        }
+
+        function openGroupChat(id) {
+            currentGroupChat = groupChats.find(chat => chat.id === id);
+            
+            document.querySelectorAll('#groupChatsList .chat-list-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.id == id);
+            });
+
+            const area = document.getElementById('groupChatArea');
+            area.innerHTML = `
+                <div class="chat-header">
+                    <div>
+                        <h2>${currentGroupChat.name}</h2>
+                        <p style="font-size: 12px; color: #666;">${currentGroupChat.members.join(', ')}</p>
+                    </div>
+                    <div class="chat-header-actions">
+                        <button class="btn-outline btn btn-small" onclick="showRenameGroupModal()">✏️ Rename</button>
+                        <button class="btn-outline btn btn-small" onclick="leaveGroupChat()">Leave</button>
+                    </div>
+                </div>
+                <div class="messages" id="groupMessages"></div>
+                <div class="message-input-box">
+                    <input type="text" id="groupMessageInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendGroupMessage()">
+                    <button class="btn" onclick="sendGroupMessage()">Send</button>
+                </div>
+            `;
+            loadGroupMessages();
+        }
+
+        function loadGroupMessages() {
+            const container = document.getElementById('groupMessages');
+            container.innerHTML = currentGroupChat.messages.map(msg => `
+                <div class="message ${msg.me ? 'me' : ''}">
+                    <div class="message-bubble">${msg.text}</div>
+                    <div class="message-meta">${msg.from} · ${msg.time}</div>
+                </div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendGroupMessage() {
+            const input = document.getElementById('groupMessageInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            currentGroupChat.messages.push({
+                from: 'You',
+                text: text,
+                time: 'Now',
+                timestamp: Date.now(),
+                me: true
+            });
+            
+            input.value = '';
+            loadGroupMessages();
+        }
+
+        function leaveGroupChat() {
+            if (confirm(`Leave "${currentGroupChat.name}"?`)) {
+                groupChats = groupChats.filter(chat => chat.id !== currentGroupChat.id);
+                loadGroupChats();
+                document.getElementById('groupChatArea').innerHTML = `
+                    <div class="text-center" style="padding: 4rem; color: #666;">
+                        <p style="font-size: 3rem; margin-bottom: 1rem;">💬</p>
+                        <p>Select a group</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Create Group Modal
+        function showCreateGroupModal() {
+            document.getElementById('createGroupModal').classList.add('active');
+            document.getElementById('friendsCheckboxList').innerHTML = profiles.map(profile => `
+                <div class="friend-checkbox">
+                    <input type="checkbox" value="${profile.name}" id="f-${profile.name.replace(/\s/g, '')}">
+                    <label for="f-${profile.name.replace(/\s/g, '')}">${profile.name}</label>
+                </div>
+            `).join('');
+        }
+
+        function closeCreateGroupModal() {
+            document.getElementById('createGroupModal').classList.remove('active');
+            document.getElementById('groupName').value = '';
+        }
+
+        function createGroupChat() {
+            const name = document.getElementById('groupName').value.trim();
+            const selectedFriends = [];
+            
+            document.querySelectorAll('#friendsCheckboxList input:checked').forEach(checkbox => {
+                selectedFriends.push(checkbox.value);
+            });
+
+            if (!name) return alert('Please enter a group name');
+            if (!selectedFriends.length) return alert('Please select at least one friend');
+
+            groupChats.unshift({
+                id: Date.now(),
+                name: name,
+                members: [...selectedFriends, 'You'],
+                messages: []
+            });
+
+            closeCreateGroupModal();
+            loadGroupChats();
+            alert('Group created!');
+        }
+
+        // Rename Group Modal
+        function showRenameGroupModal() {
+            document.getElementById('renameGroupModal').classList.add('active');
+            document.getElementById('newGroupName').value = currentGroupChat.name;
+        }
+
+        function closeRenameGroupModal() {
+            document.getElementById('renameGroupModal').classList.remove('active');
+        }
+
+        function renameGroup() {
+            const newName = document.getElementById('newGroupName').value.trim();
+            if (!newName) return alert('Please enter a name');
+
+            currentGroupChat.name = newName;
+            closeRenameGroupModal();
+            loadGroupChats();
+            openGroupChat(currentGroupChat.id);
+        }
+
+        // Private Messages Functions (sorted by newest)
+        function loadPrivateMessages() {
+            // Sort by lastActivity (newest first)
+            const sortedMessages = [...privateMessages].sort((a, b) => b.lastActivity - a.lastActivity);
+            
+            const list = document.getElementById('privateMessagesList');
+            list.innerHTML = sortedMessages.map(pm => `
+                <div class="chat-list-item" onclick="openPrivateChat('${pm.friend}')" data-friend="${pm.friend}">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="profile-avatar" style="width: 40px; height: 40px; font-size: 1rem; margin: 0;">
+                            ${getInitials(pm.friend)}
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 0.25rem;">${pm.friend}</h4>
+                            <p style="font-size: 12px; color: #666;">
+                                ${pm.messages.length ? pm.messages[pm.messages.length - 1].text.substring(0, 25) + '...' : 'No messages'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openPrivateChat(friendName) {
+            showPage('messages');
+            currentPrivateChat = privateMessages.find(pm => pm.friend === friendName);
+
+            if (!currentPrivateChat) {
+                currentPrivateChat = {
+                    friend: friendName,
+                    lastActivity: Date.now(),
+                    messages: []
+                };
+                privateMessages.push(currentPrivateChat);
+                loadPrivateMessages();
+            }
+
+            document.querySelectorAll('#privateMessagesList .chat-list-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.friend === friendName);
+            });
+
+            const area = document.getElementById('privateMessageArea');
+            area.innerHTML = `
+                <div class="chat-header">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <div class="profile-avatar" style="width: 48px; height: 48px; font-size: 1.25rem; margin: 0;">
+                            ${getInitials(friendName)}
+                        </div>
+                        <h2>${friendName}</h2>
+                    </div>
+                </div>
+                <div class="messages" id="privateMessagesContent"></div>
+                <div class="message-input-box">
+                    <input type="text" id="privateMessageInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendPrivateMessage()">
+                    <button class="btn" onclick="sendPrivateMessage()">Send</button>
+                </div>
+            `;
+            loadPrivateMessageContent();
+        }
+
+        function loadPrivateMessageContent() {
+            const container = document.getElementById('privateMessagesContent');
+            container.innerHTML = currentPrivateChat.messages.map(msg => `
+                <div class="message ${msg.me ? 'me' : ''}">
+                    <div class="message-bubble">${msg.text}</div>
+                    <div class="message-meta">${msg.from} · ${msg.time}</div>
+                </div>
+            `).join('');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendPrivateMessage() {
+            const input = document.getElementById('privateMessageInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const now = Date.now();
+            currentPrivateChat.messages.push({
+                from: 'You',
+                text: text,
+                time: 'Now',
+                timestamp: now,
+                me: true
+            });
+            currentPrivateChat.lastActivity = now;
+
+            input.value = '';
+            loadPrivateMessageContent();
+            loadPrivateMessages();
+        }
+
+        // New Message Modal
+        function showNewMessageModal() {
+            document.getElementById('newMessageModal').classList.add('active');
+            const existingChats = privateMessages.map(pm => pm.friend);
+
+            document.getElementById('availableFriendsList').innerHTML = profiles.map(profile => `
+                <div class="friend-item" onclick="startNewChat('${profile.name}')">
+                    <div class="friend-item-avatar">${getInitials(profile.name)}</div>
+                    <div>
+                        <strong>${profile.name}</strong>
+                        <p style="font-size: 12px; color: #666;">${profile.school}</p>
+                    </div>
+                    ${existingChats.includes(profile.name) ? '<span style="font-size: 12px; color: #666; margin-left: auto;">💬</span>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function closeNewMessageModal() {
+            document.getElementById('newMessageModal').classList.remove('active');
+        }
+
+        function startNewChat(friendName) {
+            closeNewMessageModal();
+            openPrivateChat(friendName);
+        }
+
+        // Profile Tab Functions
+        function showTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Profile Edit Functions
+        let isEditing = false;
+
+        function toggleEdit() {
+            isEditing = !isEditing;
+            
+            const fields = ['firstName', 'lastName', 'age', 'school', 'interests', 'bio'];
+            fields.forEach(id => {
+                document.getElementById(id).disabled = !isEditing;
+            });
+
+            document.getElementById('editBtn').innerHTML = isEditing ? '👁️ View' : '✏️ Edit';
+            document.getElementById('profileActions').style.display = isEditing ? 'flex' : 'none';
+        }
+
+        function saveProfile() {
+            userData.firstName = document.getElementById('firstName').value;
+            userData.lastName = document.getElementById('lastName').value;
+            userData.age = document.getElementById('age').value;
+            userData.school = document.getElementById('school').value;
+            userData.interests = document.getElementById('interests').value;
+            userData.bio = document.getElementById('bio').value;
+
+            const initials = userData.firstName[0] + userData.lastName[0];
+            document.getElementById('userAvatar').textContent = initials;
+            document.getElementById('profileAvatar').textContent = initials;
+            document.getElementById('userName').textContent = userData.firstName + ' ' + userData.lastName;
+            document.getElementById('profileName').textContent = userData.firstName + ' ' + userData.lastName;
+            document.getElementById('welcomeName').textContent = userData.firstName;
+
+            toggleEdit();
+            alert('Profile saved!');
+        }
+
+        function cancelEdit() {
+            document.getElementById('firstName').value = userData.firstName;
+            document.getElementById('lastName').value = userData.lastName;
+            document.getElementById('age').value = userData.age;
+            document.getElementById('school').value = userData.school;
+            document.getElementById('interests').value = userData.interests;
+            document.getElementById('bio').value = userData.bio;
+            toggleEdit();
+        }
+
+        // Initialize App
+        window.onload = function() {
+            loadProfiles();
+            loadMatch();
+            loadGroupChats();
+            loadPrivateMessages();
+        };
+    </script>
+</body>
+</html>
