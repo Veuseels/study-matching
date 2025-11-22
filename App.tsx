@@ -9,6 +9,7 @@ import Profile from './views/Profile';
 import Login from './views/Login';
 import Signup from './views/Signup';
 import Friends from './views/Friends';
+import AIAssistant from './views/AIAssistant';
 
 const App: React.FC = () => {
   const { view, user } = useApp();
@@ -30,6 +31,7 @@ const App: React.FC = () => {
       case 'messages': return <Messages />;
       case 'profile': return <Profile />;
       case 'friends': return <Friends />;
+      case 'aiassistant': return <AIAssistant />;
       default: return <Home />;
     }
   };

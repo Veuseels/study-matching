@@ -4,7 +4,8 @@ export const getOpenAIClient = (): OpenAI | null => {
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
 
     if (!apiKey) {
-        console.warn('OpenAI API key not found in environment variables');
+        console.error('❌ OpenAI API key is MISSING. Please check your .env.local file.');
+        console.error('Expected variable: VITE_OPENAI_API_KEY');
         return null;
     }
 

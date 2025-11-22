@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { GraduationCap, MessageCircle, User, LogOut, Search, Users } from 'lucide-react';
+import { GraduationCap, MessageCircle, User, LogOut, Search, Users, Brain } from 'lucide-react';
 
 const Header: React.FC = () => {
   const { view, setView, logout, user, profiles } = useApp();
@@ -31,6 +31,7 @@ const Header: React.FC = () => {
     { id: 'friends', label: 'Friends', icon: Users },
     { id: 'groupchats', label: 'Groups' },
     { id: 'messages', label: 'Messages', icon: MessageCircle },
+    { id: 'aiassistant', label: 'AI Tutor', icon: Brain },
   ];
 
   const getInitials = (name: string) => name.split(' ').map(n => n[0]).join('');
